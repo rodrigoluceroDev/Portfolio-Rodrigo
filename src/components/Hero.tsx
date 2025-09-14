@@ -1,113 +1,150 @@
+// components/Hero.tsx
 'use client';
 
 import { motion } from 'framer-motion';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
-// Animaciones simples sin variants complejos
-const containerAnimation = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      duration: 0.8
+const Hero = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
     }
-  }
-};
+  };
 
-const itemAnimation = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut" as const
+      }
     }
-  }
-};
+  };
 
-export default function Hero() {
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 80,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollToNextSection = () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      window.scrollTo({
+        top: aboutSection.offsetTop - 80,
+        behavior: 'smooth',
+      });
     }
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-dark pt-20 px-4">
-      <motion.div
-        className="container mx-auto text-center"
-        initial="hidden"
-        animate="visible"
-        variants={containerAnimation}
-      >
-        {/* Título Principal */}
-        <motion.h1
-          variants={itemAnimation}
-          className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
-        >
-          Rodrigo <span className="text-secondary">Lucero</span>
-        </motion.h1>
-
-        {/* Subtítulo */}
-        <motion.p
-          variants={itemAnimation}
-          className="text-xl md:text-2xl text-light mb-8 font-light"
-        >
-          Desarrollador Full Stack & Diseñador UI/UX
-        </motion.p>
-
-        {/* Descripción */}
-        <motion.p
-          variants={itemAnimation}
-          className="text-lg text-light/80 mb-12 max-w-2xl mx-auto leading-relaxed"
-        >
-          Creo experiencias digitales excepcionales con las últimas tecnologías web. 
-          Pasión por el código limpio, diseño intuitivo y performance optimizada.
-        </motion.p>
-
-        {/* Botones */}
+    <section id="home" className="min-h-screen flex items-center justify-center relative bg-primary overflow-hidden">
+      {/* Elementos de fondo decorativos modernos */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-[#1a2530] opacity-95"></div>
+      
+      {/* Patrón de puntos decorativos */}
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3498db_1px,transparent_2px)] [background-size:32px_32px]"></div>
+      
+      {/* Formas geométricas de fondo */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-secondary rounded-full filter blur-3xl opacity-15 animate-pulse-slow"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full filter blur-3xl opacity-15 animate-pulse-slow delay-2000"></div>
+      <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-secondary rounded-lg filter blur-3xl opacity-10 rotate-45 animate-pulse-slow delay-1000"></div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
-          variants={itemAnimation}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex flex-col items-center text-center max-w-3xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <motion.button
-            onClick={() => scrollToSection('projects')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-secondary hover:bg-secondary/90 text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors shadow-lg shadow-secondary/25"
+          {/* Saludo inicial */}
+          <motion.p 
+            className="text-secondary text-lg md:text-xl font-medium mb-4"
+            variants={itemVariants}
           >
-            Ver Proyectos
-          </motion.button>
+            ¡Hola! Soy
+          </motion.p>
           
-          <motion.button
-            onClick={() => scrollToSection('contact')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-full font-semibold text-lg transition-colors"
+          {/* Nombre principal */}
+          <motion.h1 
+            className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+            variants={itemVariants}
           >
-            Contactarme
-          </motion.button>
+            Rodrigo <span className="text-accent">Lucero</span>
+          </motion.h1>
+          
+          {/* Descripción */}
+          <motion.div 
+            className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed"
+            variants={itemVariants}
+          >
+            <span className="block">Desarrollador Full Stack especializado en crear</span>
+            <span className="block">experiencias digitales excepcionales con</span>
+            <span className="text-secondary font-semibold">React</span>, <span className="text-secondary font-semibold">Next.js</span> y <span className="text-secondary font-semibold">TypeScript</span>.
+          </motion.div>
+          
+          {/* Botones de acción */}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-5 mb-16"
+            variants={itemVariants}
+          >
+            <a
+              href="#projects"
+              onClick={(e) => handleSmoothScroll(e, 'projects')}
+              className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              Ver Proyectos
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => handleSmoothScroll(e, 'contact')}
+              className="px-8 py-4 bg-transparent border-2 border-secondary text-secondary font-semibold rounded-lg hover:bg-secondary hover:text-white transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contactarme
+            </a>
+          </motion.div>
         </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
+        
+        {/* Flecha de scroll mejorada y moderna - POSICIÓN MÁS BAJA */}
+        <motion.div 
+          className="absolute bottom1 left-1/2 transform -translate-x-1/2 cursor-pointer group"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 0.5 }}
+          onClick={scrollToNextSection}
         >
-          <div className="animate-bounce">
-            <div className="w-6 h-10 border-2 border-light rounded-full flex justify-center">
-              <motion.div
-                className="w-1 h-3 bg-light rounded-full mt-2"
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center text-secondary group-hover:text-accent transition-colors duration-300"
+          >
+            <span className="text-sm mb-2 font-medium tracking-wider text-gray-400 group-hover:text-white transition-colors">DESCUBRIR MÁS</span>
+            <div className="w-10 h-10 rounded-full border-2 border-secondary group-hover:border-accent flex items-center justify-center group-hover:bg-accent/10 transition-all duration-300">
+              <ChevronDownIcon className="w-6 h-6" />
             </div>
-          </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
-}
+};
+
+export default Hero;
